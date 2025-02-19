@@ -9,13 +9,8 @@ import { Post } from "@/types/post";
 
 async function getGitHubUser(url: string) {
   try {
-    const res = await fetch(url);
-
-    if (!res.ok) {
-      throw new Error(`GitHub API request failed with status: ${res.status}`);
-    }
-
-    return (await res.json()) as GithubUser;
+    const res = await apiClient.get<GithubUser>(url);
+    return res.data as GithubUser;
   } catch (error) {
     console.error("Failed to fetch GitHub user:", error);
     throw error;
