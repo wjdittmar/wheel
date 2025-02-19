@@ -2,8 +2,11 @@
 
 import { JSX, useEffect, useCallback } from "react";
 import { useState } from "react";
+import { apiClient } from "./lib/api/clientApiClient";
 
 import { GithubUser } from "@/types/github";
+import { Post } from "@/types/post";
+
 async function getGitHubUser(url: string) {
   try {
     const res = await fetch(url);
@@ -21,7 +24,6 @@ async function getGitHubUser(url: string) {
 
 export default function Home(): JSX.Element {
   const [user, setUser] = useState<GithubUser>();
-
   // useCallback otherwise fetchData is recreated on every render
   const fetchData = useCallback(async (url: string) => {
     try {
@@ -36,6 +38,21 @@ export default function Home(): JSX.Element {
   useEffect(() => {
     fetchData("/api/github/users/octocat");
   }, [fetchData]);
+
+  const fetchPostData = useCallback(async (url: string) => {
+    try {
+      const response = await apiClient.get<Post[]>(url);
+      response.data.forEach((post) => {
+        console.log(post.id);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchPostData("https://jsonplaceholder.typicode.com/posts");
+  }, [fetchPostData]);
 
   return (
     <img

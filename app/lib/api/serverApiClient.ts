@@ -1,3 +1,4 @@
+// axios for types, interceptors, error handling, timeout
 import axios, {
     AxiosInstance,
     AxiosRequestConfig,
@@ -34,6 +35,8 @@ export class ServerApiClient {
         return headers;
     }
 
+    // common error handling
+    // could also add token refresh here
     private setupInterceptors() {
         this.instance.interceptors.response.use(
             (response: AxiosResponse) => response,
@@ -47,6 +50,7 @@ export class ServerApiClient {
         );
     }
 
+    // could add request logging here
     protected async request<T>(config: AxiosRequestConfig): Promise<T> {
         const response = await this.instance.request<T>(config);
         return response.data;

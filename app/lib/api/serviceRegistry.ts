@@ -1,4 +1,4 @@
-import { ServerApiClient } from "./baseApiClient";
+import { ServerApiClient } from "./serverApiClient";
 
 interface ServiceConfig {
     baseURL: string;
